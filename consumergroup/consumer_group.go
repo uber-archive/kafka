@@ -346,11 +346,10 @@ func (cg *ConsumerGroup) topicConsumer(topic string, messages chan<- *sarama.Con
 		// Consume all the assigned partitions
 		var wg sync.WaitGroup
 		for _, pid := range myPartitions {
-
 			wg.Add(1)
 			go cg.partitionConsumer(topic, pid.ID, messages, errors, &wg, partitionConsumerReinitRetries, stopper, topicStopper)
-			partitionConsumerReinitRetries = 10
 		}
+		partitionConsumerReinitRetries = 10
 
 		select {
 		case <-stopper:
